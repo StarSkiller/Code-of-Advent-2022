@@ -1,3 +1,61 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿namespace Code_of_Advent_2022
+{
+    class Program
+    {
+        private static void Main()
+        {
+            var one = new TaskOne();
+            Console.WriteLine("Task 1:");
+            Console.WriteLine("a) " + one.GetMax());
+            Console.WriteLine("b) " + one.GetTopThreeMax());
+        }
 
-Console.WriteLine("Hello, World!");
+        class TaskOne
+        {
+            private static FileStream _fs =
+                new FileStream(
+                    "../../../taskone.txt",
+                    FileMode.Open);
+
+            private readonly HashSet<int> _numList = new HashSet<int>();
+
+            private readonly StreamReader _read = new StreamReader(_fs);
+
+            public TaskOne()
+            {
+                int sum = 0;
+                for (int i = 1; i <= 2259; i++)
+                {
+                    string line = _read.ReadLine();
+                    if (line == "")
+                    {
+                        _numList.Add(sum);
+                        sum = 0;
+                    }
+                    else
+                    {
+                        sum += Int32.Parse(line);
+                    }
+                }
+            }
+
+            public int GetMax()
+            {
+                return _numList.Max();
+            }
+
+            public int GetTopThreeMax()
+            {
+                int sum = 0;
+                HashSet<int> localNumList = _numList;
+                for (int i = 0; i < 3; i++)
+                {
+                    sum += localNumList.Max();
+                    localNumList.Remove(localNumList.Max());
+                }
+
+                return sum;
+            }
+        }
+    }
+}
