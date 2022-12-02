@@ -14,10 +14,7 @@
         {
             private static readonly int Length = File.ReadAllLines("../../../taskone.txt").Length;
             
-            private static readonly FileStream Fs =
-                new FileStream(
-                    "../../../taskone.txt",
-                    FileMode.Open);
+            private static readonly FileStream Fs = new FileStream("../../../taskone.txt", FileMode.Open);
 
             private readonly HashSet<int> _numList = new HashSet<int>();
 
@@ -57,6 +54,24 @@
                 }
 
                 return sum;
+            }
+        }
+        class TaskTwo
+        {
+            private static readonly int Length = File.ReadAllLines("../../../taskone.txt").Length;
+            
+            private static readonly FileStream Fs = new FileStream("../../../tasktwo.txt", FileMode.Open);
+
+            private readonly StreamReader _read = new StreamReader(Fs);
+
+            public TaskTwo()
+            {
+                int sum = 0;
+                for (int i = 1; i <= Length; i++)
+                {
+                    string line = _read.ReadLine();
+                    
+                }
             }
         }
     }
