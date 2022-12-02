@@ -12,6 +12,8 @@
 
         class TaskOne
         {
+            private static int length = File.ReadAllLines("../../../taskone.txt").Length;
+            
             private static FileStream _fs =
                 new FileStream(
                     "../../../taskone.txt",
@@ -24,7 +26,7 @@
             public TaskOne()
             {
                 int sum = 0;
-                for (int i = 1; i <= 2259; i++)
+                for (int i = 1; i <= length; i++)
                 {
                     string line = _read.ReadLine();
                     if (line == "")
