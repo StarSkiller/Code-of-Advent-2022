@@ -12,21 +12,21 @@
 
         class TaskOne
         {
-            private static int length = File.ReadAllLines("../../../taskone.txt").Length;
+            private static readonly int Length = File.ReadAllLines("../../../taskone.txt").Length;
             
-            private static FileStream _fs =
+            private static readonly FileStream Fs =
                 new FileStream(
                     "../../../taskone.txt",
                     FileMode.Open);
 
             private readonly HashSet<int> _numList = new HashSet<int>();
 
-            private readonly StreamReader _read = new StreamReader(_fs);
+            private readonly StreamReader _read = new StreamReader(Fs);
 
             public TaskOne()
             {
                 int sum = 0;
-                for (int i = 1; i <= length; i++)
+                for (int i = 1; i <= Length; i++)
                 {
                     string line = _read.ReadLine();
                     if (line == "")
