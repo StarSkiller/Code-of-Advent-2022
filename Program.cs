@@ -84,6 +84,15 @@ internal class Program
             losing['Z'] = 'A';
         }
 
+        private int GamePoints(char enemy, char played)
+        {
+            if (winning[played] == enemy) return 6;
+
+            if (losing[played] == enemy) return 0;
+
+            return 3;
+        }
+
         public int CalcSumOfPlayed()
         {
             var sum = 0;
@@ -102,6 +111,8 @@ internal class Program
                         sum += 3;
                         break;
                 }
+
+                sum += GamePoints(content[0], content[2]);
             }
 
             return sum;
