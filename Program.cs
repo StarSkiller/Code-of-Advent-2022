@@ -1,78 +1,110 @@
-﻿namespace Code_of_Advent_2022
+﻿namespace Code_of_Advent_2022;
+
+internal class Program
 {
-    class Program
+    private static void Main()
     {
-        private static void Main()
+        var one = new TaskOne();
+        var two = new TaskTwo();
+        Console.WriteLine("Task 1:");
+        Console.WriteLine("a) " + one.GetMax());
+        Console.WriteLine("b) " + one.GetTopThreeMax());
+        Console.WriteLine("");
+        Console.WriteLine("Task 2:");
+        Console.WriteLine("a) " + two.CalcSumOfPlayed());
+    }
+
+    private class TaskOne
+    {
+        private static readonly int Length = File.ReadAllLines("../../../taskone.txt").Length;
+
+        private static readonly FileStream Fs = new("../../../taskone.txt", FileMode.Open);
+
+        private readonly HashSet<int> _numList = new();
+
+        private readonly StreamReader _read = new(Fs);
+
+        public TaskOne()
         {
-            var one = new TaskOne();
-            Console.WriteLine("Task 1:");
-            Console.WriteLine("a) " + one.GetMax());
-            Console.WriteLine("b) " + one.GetTopThreeMax());
+            var sum = 0;
+            for (var i = 1; i <= Length; i++)
+            {
+                var line = _read.ReadLine();
+                if (line == "")
+                {
+                    _numList.Add(sum);
+                    sum = 0;
+                }
+                else
+                {
+                    sum += int.Parse(line);
+                }
+            }
         }
 
-        class TaskOne
+        public int GetMax()
         {
-            private static readonly int Length = File.ReadAllLines("../../../taskone.txt").Length;
-            
-            private static readonly FileStream Fs = new FileStream("../../../taskone.txt", FileMode.Open);
-
-            private readonly HashSet<int> _numList = new HashSet<int>();
-
-            private readonly StreamReader _read = new StreamReader(Fs);
-
-            public TaskOne()
-            {
-                int sum = 0;
-                for (int i = 1; i <= Length; i++)
-                {
-                    string line = _read.ReadLine();
-                    if (line == "")
-                    {
-                        _numList.Add(sum);
-                        sum = 0;
-                    }
-                    else
-                    {
-                        sum += Int32.Parse(line);
-                    }
-                }
-            }
-
-            public int GetMax()
-            {
-                return _numList.Max();
-            }
-
-            public int GetTopThreeMax()
-            {
-                int sum = 0;
-                HashSet<int> localNumList = _numList;
-                for (int i = 0; i < 3; i++)
-                {
-                    sum += localNumList.Max();
-                    localNumList.Remove(localNumList.Max());
-                }
-
-                return sum;
-            }
+            return _numList.Max();
         }
-        class TaskTwo
+
+        public int GetTopThreeMax()
         {
-            private static readonly int Length = File.ReadAllLines("../../../taskone.txt").Length;
-            
-            private static readonly FileStream Fs = new FileStream("../../../tasktwo.txt", FileMode.Open);
-
-            private readonly StreamReader _read = new StreamReader(Fs);
-
-            public TaskTwo()
+            var sum = 0;
+            var localNumList = _numList;
+            for (var i = 0; i < 3; i++)
             {
-                int sum = 0;
-                for (int i = 1; i <= Length; i++)
+                sum += localNumList.Max();
+                localNumList.Remove(localNumList.Max());
+            }
+
+            return sum;
+        }
+    }
+
+    private class TaskTwo
+    {
+        private static readonly int Length = File.ReadAllLines("../../../tasktwo.txt").Length;
+
+        private static readonly FileStream Fs = new("../../../tasktwo.txt", FileMode.Open);
+
+        private readonly StreamReader _read = new(Fs);
+
+        private readonly Dictionary<char, char> losing = new();
+
+        private readonly Dictionary<char, char> winning = new();
+
+        public TaskTwo()
+        {
+            winning['X'] = 'C';
+            winning['Y'] = 'A';
+            winning['Z'] = 'B';
+
+            losing['X'] = 'B';
+            losing['Y'] = 'C';
+            losing['Z'] = 'A';
+        }
+
+        public int CalcSumOfPlayed()
+        {
+            var sum = 0;
+            for (var i = 1; i <= Length; i++)
+            {
+                var content = _read.ReadLine();
+                switch (content[2])
                 {
-                    string line = _read.ReadLine();
-                    
+                    case 'X':
+                        sum += 1;
+                        break;
+                    case 'Y':
+                        sum += 2;
+                        break;
+                    case 'Z':
+                        sum += 3;
+                        break;
                 }
             }
+
+            return sum;
         }
     }
 }
