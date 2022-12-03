@@ -6,40 +6,38 @@ internal static class Program
 {
     private static void Main()
     {
-        var one = new TaskOne();
-        var two = new TaskTwo();
         Console.WriteLine("Task 1:");
-        Console.WriteLine("a) " + one.GetMax());
-        Console.WriteLine("b) " + one.GetTopThreeMax());
+        Console.WriteLine("a) " + TaskOne.GetMax());
+        Console.WriteLine("b) " + TaskOne.GetTopThreeMax());
         Console.WriteLine("");
         Console.WriteLine("Task 2:");
-        Console.WriteLine("a) " + two.CalcSumOfPlayed());
-        Console.WriteLine("b) " + two.CalcSumOfPlayedAlt());
+        Console.WriteLine("a) " + TaskTwo.CalcSumOfPlayed());
+        Console.WriteLine("b) " + TaskTwo.CalcSumOfPlayedAlt());
         Console.WriteLine("");
         Console.WriteLine("Task 3:");
         Console.WriteLine("a) " + TaskThree.CalculateFinalOne());
         Console.WriteLine("b) " + TaskThree.CalculateFinalTwo());
     }
 
-    private class TaskOne
+    private static class TaskOne
     {
         private static readonly int Length = File.ReadAllLines("../../../taskOne.txt").Length;
 
         private static readonly FileStream Fs = new("../../../taskOne.txt", FileMode.Open);
 
-        private readonly HashSet<int> _numList = new();
+        private static readonly HashSet<int> NumList = new();
 
-        private readonly StreamReader _read = new(Fs);
+        private static readonly StreamReader Read = new(Fs);
 
-        public TaskOne()
+        static TaskOne()
         {
             var sum = 0;
             for (var i = 1; i <= Length; i++)
             {
-                var line = _read.ReadLine();
+                var line = Read.ReadLine();
                 if (line == "")
                 {
-                    _numList.Add(sum);
+                    NumList.Add(sum);
                     sum = 0;
                 }
                 else
@@ -50,34 +48,34 @@ internal static class Program
             }
         }
 
-        public int GetMax()
+        public static int GetMax()
         {
-            return _numList.Max();
+            return NumList.Max();
         }
 
-        public int GetTopThreeMax()
+        public static int GetTopThreeMax()
         {
             var sum = 0;
             for (var i = 0; i < 3; i++)
             {
-                sum += _numList.Max();
-                _numList.Remove(_numList.Max());
+                sum += NumList.Max();
+                NumList.Remove(NumList.Max());
             }
 
             return sum;
         }
     }
 
-    private class TaskTwo
+    private static class TaskTwo
     {
         private static readonly Dictionary<char, char> Lose = new();
 
         private static readonly Dictionary<char, char> Win = new();
 
         private static readonly Dictionary<char, char> Draw = new();
-        private readonly string[] _content = File.ReadAllLines("../../../taskTwo.txt");
+        private static readonly string[] Content = File.ReadAllLines("../../../taskTwo.txt");
 
-        public TaskTwo()
+        static TaskTwo()
         {
             Win['X'] = 'C';
             Win['Y'] = 'A';
@@ -110,10 +108,10 @@ internal static class Program
             return Lose[played] == enemy ? 0 : 3;
         }
 
-        public int CalcSumOfPlayed()
+        public static int CalcSumOfPlayed()
         {
             var sum = 0;
-            foreach (var l in _content)
+            foreach (var l in Content)
             {
                 sum += FirstPoints(l[2]);
                 sum += GamePoints(l[0], l[2]);
@@ -133,10 +131,10 @@ internal static class Program
             };
         }
 
-        public int CalcSumOfPlayedAlt()
+        public static int CalcSumOfPlayedAlt()
         {
             var sum = 0;
-            foreach (var l in _content)
+            foreach (var l in Content)
                 switch (l[2])
                 {
                     case 'X':
