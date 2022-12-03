@@ -14,6 +14,7 @@ internal class Program
         Console.WriteLine("");
         Console.WriteLine("Task 2:");
         Console.WriteLine("a) " + two.CalcSumOfPlayed());
+        Console.WriteLine("b) " + two.CalcSumOfPlayedAlt());
     }
 
     private class TaskOne
@@ -129,12 +130,52 @@ internal class Program
                 switch (l[2])
                 {
                     case 'X':
+                        switch (l[0])
+                        {
+                            case 'A':
+                                sum += FirstPoints(Lose.FirstOrDefault(x => x.Value == 'A').Key);
+                                break;
+                            case 'B':
+                                sum += FirstPoints(Lose.FirstOrDefault(x => x.Value == 'B').Key);
+                                break;
+                            case 'C':
+                                sum += FirstPoints(Lose.FirstOrDefault(x => x.Value == 'C').Key);
+                                break;
+                        }
+
+                        sum += 0;
                         break;
                     case 'Y':
-                        sum += 2;
+                        switch (l[0])
+                        {
+                            case 'A':
+                                sum += FirstPoints(Draw.FirstOrDefault(x => x.Value == 'A').Key);
+                                break;
+                            case 'B':
+                                sum += FirstPoints(Draw.FirstOrDefault(x => x.Value == 'B').Key);
+                                break;
+                            case 'C':
+                                sum += FirstPoints(Draw.FirstOrDefault(x => x.Value == 'C').Key);
+                                break;
+                        }
+
+                        sum += 3;
                         break;
                     case 'Z':
-                        sum += 3;
+                        switch (l[0])
+                        {
+                            case 'A':
+                                sum += FirstPoints(Win.FirstOrDefault(x => x.Value == 'A').Key);
+                                break;
+                            case 'B':
+                                sum += FirstPoints(Win.FirstOrDefault(x => x.Value == 'B').Key);
+                                break;
+                            case 'C':
+                                sum += FirstPoints(Win.FirstOrDefault(x => x.Value == 'C').Key);
+                                break;
+                        }
+
+                        sum += 6;
                         break;
                 }
 
