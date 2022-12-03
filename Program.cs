@@ -1,4 +1,6 @@
-﻿namespace Code_of_Advent_2022;
+﻿using System.Data;
+
+namespace Code_of_Advent_2022;
 
 internal class Program
 {
@@ -16,9 +18,9 @@ internal class Program
 
     private class TaskOne
     {
-        private static readonly int Length = File.ReadAllLines("../../../taskone.txt").Length;
+        private static readonly int Length = File.ReadAllLines("../../../taskOne.txt").Length;
 
-        private static readonly FileStream Fs = new("../../../taskone.txt", FileMode.Open);
+        private static readonly FileStream Fs = new("../../../taskOne.txt", FileMode.Open);
 
         private readonly HashSet<int> _numList = new();
 
@@ -37,6 +39,7 @@ internal class Program
                 }
                 else
                 {
+                    if (line == null) throw new NoNullAllowedException();
                     sum += int.Parse(line);
                 }
             }
@@ -63,43 +66,41 @@ internal class Program
 
     private class TaskTwo
     {
-        private static readonly int Length = File.ReadAllLines("../../../tasktwo.txt").Length;
+        private static readonly Dictionary<char, char> Lose = new();
 
-        private static readonly FileStream Fs = new("../../../tasktwo.txt", FileMode.Open);
+        private static readonly Dictionary<char, char> Win = new();
 
-        private readonly StreamReader _read = new(Fs);
-
-        private readonly Dictionary<char, char> losing = new();
-
-        private readonly Dictionary<char, char> winning = new();
+        private static readonly Dictionary<char, char> Draw = new();
+        private readonly string[] _content = File.ReadAllLines("../../../taskTwo.txt");
 
         public TaskTwo()
         {
-            winning['X'] = 'C';
-            winning['Y'] = 'A';
-            winning['Z'] = 'B';
+            Win['X'] = 'C';
+            Win['Y'] = 'A';
+            Win['Z'] = 'B';
 
-            losing['X'] = 'B';
-            losing['Y'] = 'C';
-            losing['Z'] = 'A';
+            Lose['X'] = 'B';
+            Lose['Y'] = 'C';
+            Lose['Z'] = 'A';
+
+            Draw['X'] = 'A';
+            Draw['Y'] = 'B';
+            Draw['Z'] = 'C';
         }
 
         private int GamePoints(char enemy, char played)
         {
-            if (winning[played] == enemy) return 6;
+            if (Win[played] == enemy) return 6;
 
-            if (losing[played] == enemy) return 0;
-
-            return 3;
+            return Lose[played] == enemy ? 0 : 3;
         }
 
         public int CalcSumOfPlayed()
         {
             var sum = 0;
-            for (var i = 1; i <= Length; i++)
+            foreach (var l in _content)
             {
-                var content = _read.ReadLine();
-                switch (content[2])
+                switch (l[2])
                 {
                     case 'X':
                         sum += 1;
@@ -112,8 +113,25 @@ internal class Program
                         break;
                 }
 
-                sum += GamePoints(content[0], content[2]);
+                sum += GamePoints(l[0], l[2]);
             }
+
+            return sum;
+        }
+
+        public int CalcSumOfPlayedAlt()
+        {
+            var sum = 0;
+            foreach (var l in _content)
+                switch (l[2])
+                {
+                    case 'X':
+                        break;
+                    case 'Y':
+                        break;
+                    case 'Z':
+                        break;
+                }
 
             return sum;
         }
