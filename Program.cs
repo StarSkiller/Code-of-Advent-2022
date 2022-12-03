@@ -2,7 +2,7 @@
 
 namespace Code_of_Advent_2022;
 
-internal class Program
+internal static class Program
 {
     private static void Main()
     {
@@ -54,11 +54,10 @@ internal class Program
         public int GetTopThreeMax()
         {
             var sum = 0;
-            var localNumList = _numList;
             for (var i = 0; i < 3; i++)
             {
-                sum += localNumList.Max();
-                localNumList.Remove(localNumList.Max());
+                sum += _numList.Max();
+                _numList.Remove(_numList.Max());
             }
 
             return sum;
@@ -89,22 +88,18 @@ internal class Program
             Draw['Z'] = 'C';
         }
 
-        private int FirstPoints(char c)
+        private static int FirstPoints(char c)
         {
-            switch (c)
+            return c switch
             {
-                case 'X':
-                    return 1;
-                case 'Y':
-                    return 2;
-                case 'Z':
-                    return 3;
-            }
-
-            throw new ArgumentException("Does not contain: 'X' 'Y' or 'Z'");
+                'X' => 1,
+                'Y' => 2,
+                'Z' => 3,
+                _ => throw new ArgumentException("Does not contain: 'X' 'Y' or 'Z'")
+            };
         }
 
-        private int GamePoints(char enemy, char played)
+        private static int GamePoints(char enemy, char played)
         {
             if (Win[played] == enemy) return 6;
 
@@ -123,6 +118,17 @@ internal class Program
             return sum;
         }
 
+        private int DictSubCalculation(char c, Dictionary<char, char> dict)
+        {
+            return c switch
+            {
+                'A' => FirstPoints(dict.FirstOrDefault(x => x.Value == 'A').Key),
+                'B' => FirstPoints(dict.FirstOrDefault(x => x.Value == 'B').Key),
+                'C' => FirstPoints(dict.FirstOrDefault(x => x.Value == 'C').Key),
+                _ => throw new ArgumentException("false parameter!")
+            };
+        }
+
         public int CalcSumOfPlayedAlt()
         {
             var sum = 0;
@@ -130,51 +136,15 @@ internal class Program
                 switch (l[2])
                 {
                     case 'X':
-                        switch (l[0])
-                        {
-                            case 'A':
-                                sum += FirstPoints(Lose.FirstOrDefault(x => x.Value == 'A').Key);
-                                break;
-                            case 'B':
-                                sum += FirstPoints(Lose.FirstOrDefault(x => x.Value == 'B').Key);
-                                break;
-                            case 'C':
-                                sum += FirstPoints(Lose.FirstOrDefault(x => x.Value == 'C').Key);
-                                break;
-                        }
-
+                        sum += DictSubCalculation(l[0], Lose);
                         sum += 0;
                         break;
                     case 'Y':
-                        switch (l[0])
-                        {
-                            case 'A':
-                                sum += FirstPoints(Draw.FirstOrDefault(x => x.Value == 'A').Key);
-                                break;
-                            case 'B':
-                                sum += FirstPoints(Draw.FirstOrDefault(x => x.Value == 'B').Key);
-                                break;
-                            case 'C':
-                                sum += FirstPoints(Draw.FirstOrDefault(x => x.Value == 'C').Key);
-                                break;
-                        }
-
+                        sum += DictSubCalculation(l[0], Draw);
                         sum += 3;
                         break;
                     case 'Z':
-                        switch (l[0])
-                        {
-                            case 'A':
-                                sum += FirstPoints(Win.FirstOrDefault(x => x.Value == 'A').Key);
-                                break;
-                            case 'B':
-                                sum += FirstPoints(Win.FirstOrDefault(x => x.Value == 'B').Key);
-                                break;
-                            case 'C':
-                                sum += FirstPoints(Win.FirstOrDefault(x => x.Value == 'C').Key);
-                                break;
-                        }
-
+                        sum += DictSubCalculation(l[0], Win);
                         sum += 6;
                         break;
                 }
