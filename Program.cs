@@ -88,6 +88,21 @@ internal class Program
             Draw['Z'] = 'C';
         }
 
+        private int FirstPoints(char c)
+        {
+            switch (c)
+            {
+                case 'X':
+                    return 1;
+                case 'Y':
+                    return 2;
+                case 'Z':
+                    return 3;
+            }
+
+            throw new ArgumentException("Does not contain: 'X' 'Y' or 'Z'");
+        }
+
         private int GamePoints(char enemy, char played)
         {
             if (Win[played] == enemy) return 6;
@@ -100,19 +115,7 @@ internal class Program
             var sum = 0;
             foreach (var l in _content)
             {
-                switch (l[2])
-                {
-                    case 'X':
-                        sum += 1;
-                        break;
-                    case 'Y':
-                        sum += 2;
-                        break;
-                    case 'Z':
-                        sum += 3;
-                        break;
-                }
-
+                sum += FirstPoints(l[2]);
                 sum += GamePoints(l[0], l[2]);
             }
 
@@ -128,8 +131,10 @@ internal class Program
                     case 'X':
                         break;
                     case 'Y':
+                        sum += 2;
                         break;
                     case 'Z':
+                        sum += 3;
                         break;
                 }
 
